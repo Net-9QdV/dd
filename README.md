@@ -17,7 +17,7 @@ bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontents.com/taff
 
 支持DD的系统有：
 
-Debian (-d): 7, 8, 9, 10, 11, 12
+Debian (-d): 7, 8, 9, 10, 11
 
 Ubuntu (-u): 14.04, 16.04, 18.04, 20.04
 
