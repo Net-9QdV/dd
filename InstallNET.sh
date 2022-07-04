@@ -1,5 +1,4 @@
 #!/bin/bash
-# Default root password: MoeClub.org
 
 export tmpVER=''
 export tmpDIST=''
@@ -142,14 +141,14 @@ while [[ $# -ge 1 ]]; do
       shift
       ;;
     *)
-      if [[ "$1" != 'error' ]]; then echo -ne "\nInvaild option: '$1'\n\n"; fi
+      if [[ "$1" != 'error' ]]; then echo -ne "\n错误的选项: '$1'\n\n"; fi
       echo -ne " Usage:\n\tbash $(basename $0)\t-d/--debian [\033[33m\033[04mdists-name\033[0m]\n\t\t\t\t-u/--ubuntu [\033[04mdists-name\033[0m]\n\t\t\t\t-c/--centos [\033[04mdists-name\033[0m]\n\t\t\t\t-v/--ver [32/i386|64/\033[33m\033[04mamd64\033[0m] [\033[33m\033[04mdists-verison\033[0m]\n\t\t\t\t--ip-addr/--ip-gate/--ip-mask\n\t\t\t\t-apt/-yum/--mirror\n\t\t\t\t-dd/--image\n\t\t\t\t-p [linux password]\n\t\t\t\t-port [linux ssh port]\n"
       exit 1;
       ;;
     esac
   done
 
-[[ "$EUID" -ne '0' ]] && echo "Error:This script must be run as root!" && exit 1;
+[[ "$EUID" -ne '0' ]] && echo "错误: 本脚本仅限root用户运行!" && exit 1;
 
 function dependence(){
   Full='0';
@@ -166,16 +165,16 @@ function dependence(){
             fi
           done
         if [ "$Found" == '1' ]; then
-          echo -en "[\033[32mok\033[0m]\t";
+          echo -en "[\033[32m已安装\033[0m]\t";
         else
           Full='1';
-          echo -en "[\033[31mNot Install\033[0m]";
+          echo -en "[\033[31m未安装\033[0m]";
         fi
         echo -en "\t$BIN_DEP\n";
       fi
     done
   if [ "$Full" == '1' ]; then
-    echo -ne "\n\033[31mError! \033[0mPlease use '\033[33mapt-get\033[0m' or '\033[33myum\033[0m' install it.\n\n\n"
+    echo -ne "\n\033[31m错误! \033[0m请使用 '\033[33mapt-get\033[0m' 或 '\033[33myum\033[0m' 来安装缺少的依赖\n\n\n"
     exit 1;
   fi
 }
@@ -280,7 +279,7 @@ fi
 
 [ -n "$Relese" ] || Relese='Debian'
 linux_relese=$(echo "$Relese" |sed 's/\ //g' |sed -r 's/(.*)/\L\1/')
-clear && echo -e "\n\033[36m# Check Dependence\033[0m\n"
+clear && echo -e "\n\033[36m# 检查相关依赖\033[0m\n"
 
 if [[ "$ddMode" == '1' ]]; then
   dependence iconv;
@@ -305,7 +304,7 @@ fi
 IPv4="$ipAddr"; MASK="$ipMask"; GATE="$ipGate";
 
 [ -n "$IPv4" ] && [ -n "$MASK" ] && [ -n "$GATE" ] && [ -n "$ipDNS" ] || {
-  echo -ne '\nError: Invalid network config\n\n'
+  echo -ne '\n错误: 无效的网络配置\n\n'
   bash $0 error;
   exit 1;
 }
@@ -328,7 +327,7 @@ if [[ "$VER" != "arm64" ]] && [[ -n "$tmpVER" ]]; then
 fi
 
 if [[ ! -n "$VER" ]]; then
-  echo "Error! Not Architecture."
+  echo "错误! 目前的CPU架构不支持."
   bash $0 error;
   exit 1;
 fi
@@ -381,23 +380,23 @@ if [[ -n "$tmpDIST" ]]; then
     ListDIST="$(wget --no-check-certificate -qO- "$LinuxMirror/dir_sizes" |cut -f2 |grep '^[0-9]')"
     DIST="$(echo "$ListDIST" |grep "^$DISTCheck" |head -n1)"
     [[ -z "$DIST" ]] && {
-      echo -ne '\nThe dists version not found in this mirror, Please check it! \n\n'
+      echo -ne '\n未找到你选择的系统, 请仔细核查! \n\n'
       bash $0 error;
       exit 1;
     }
     wget --no-check-certificate -qO- "$LinuxMirror/$DIST/os/$VER/.treeinfo" |grep -q 'general';
     [[ $? != '0' ]] && {
-        echo -ne "\nThe version not found in this mirror, Please change mirror try again! \n\n";
+        echo -ne "\n在镜像源中未发现你选择的系统版本, 请修改镜像源后重试! \n\n";
         exit 1;
     }
   fi
 fi
 
 if [[ -z "$LinuxMirror" ]]; then
-  echo -ne "\033[31mError! \033[0mInvaild mirror! \n"
-  [ "$Relese" == 'Debian' ] && echo -en "\033[33mexample:\033[0m http://deb.debian.org/debian\n\n";
-  [ "$Relese" == 'Ubuntu' ] && echo -en "\033[33mexample:\033[0m http://archive.ubuntu.com/ubuntu\n\n";
-  [ "$Relese" == 'CentOS' ] && echo -en "\033[33mexample:\033[0m http://mirror.centos.org/centos\n\n";
+  echo -ne "\033[31m错误! \033[0m无效的镜像源! \n"
+  [ "$Relese" == 'Debian' ] && echo -en "\033[33m示例:\033[0m http://deb.debian.org/debian\n\n";
+  [ "$Relese" == 'Ubuntu' ] && echo -en "\033[33m示例:\033[0m http://archive.ubuntu.com/ubuntu\n\n";
+  [ "$Relese" == 'CentOS' ] && echo -en "\033[33m示例:\033[0m http://mirror.centos.org/centos\n\n";
   bash $0 error;
   exit 1;
 fi
@@ -409,7 +408,7 @@ if [[ "$SpikCheckDIST" == '0' ]]; then
       [[ "$CheckDEB" == "$DIST" ]] && FindDists='1' && break;
     done
   [[ "$FindDists" == '0' ]] && {
-    echo -ne '\nThe dists version not found, Please check it! \n\n'
+    echo -ne '\n未找到你选择的系统, 请仔细核查! \n\n'
     bash $0 error;
     exit 1;
   }
@@ -419,16 +418,16 @@ if [[ "$ddMode" == '1' ]]; then
   if [[ -n "$tmpURL" ]]; then
     DDURL="$tmpURL"
     echo "$DDURL" |grep -q '^http://\|^ftp://\|^https://';
-    [[ $? -ne '0' ]] && echo 'Please input vaild URL,Only support http://, ftp:// and https:// !' && exit 1;
+    [[ $? -ne '0' ]] && echo '请输入正确的DD包网址, 脚本仅支持 http://, ftp:// and https:// 开头的DD包网址!' && exit 1;
   else
-    echo 'Please input vaild image URL! ';
+    echo '请输入正确的DD包网址! ';
     exit 1;
   fi
 fi
 
-clear && echo -e "\n\033[36m# Install\033[0m\n"
+clear && echo -e "\n\033[36m# 安装系统\033[0m\n"
 
-[[ "$ddMode" == '1' ]] && echo -ne "\033[34mAuto Mode\033[0m insatll \033[33mWindows\033[0m\n[\033[33m$DDURL\033[0m]\n"
+[[ "$ddMode" == '1' ]] && echo -ne "\033[34m自动模式\033[0m 安装 \033[33mWindows\033[0m\n[\033[33m$DDURL\033[0m]\n"
 
 if [ -z "$interfaceSelect" ]; then
   if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]]; then
@@ -443,17 +442,17 @@ if [[ "$linux_relese" == 'centos' ]]; then
     awk 'BEGIN{print '${UNVER}'-'${DIST}'}' |grep -q '^-'
     if [ $? != '0' ]; then
       UNKNOWHW='1';
-      echo -en "\033[33mThe version lower then \033[31m$UNVER\033[33m may not support in auto mode! \033[0m\n";
+      echo -en "\033[33mCentOS 版本低于 \033[31m$UNVER\033[33m 的暂时不支持自动模式安装! \033[0m\n";
     fi
     awk 'BEGIN{print '${UNVER}'-'${DIST}'+0.59}' |grep -q '^-'
     if [ $? == '0' ]; then
-      echo -en "\n\033[31mThe version higher then \033[33m6.10 \033[31mis not support in current! \033[0m\n\n"
+      echo -en "\n\033[31mCentOS 版本高于 \033[33m6.10 \033[31m 暂时不支持安装! \033[0m\n\n"
       exit 1;
     fi
   fi
 fi
 
-echo -e "\n[\033[33m$Relese\033[0m] [\033[33m$DIST\033[0m] [\033[33m$VER\033[0m] Downloading..."
+echo -e "\n[\033[33m$Relese\033[0m] [\033[33m$DIST\033[0m] [\033[33m$VER\033[0m] 下载中..."
 
 if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]]; then
   [ "$DIST" == "focal" ] && legacy="legacy-" || legacy=""
