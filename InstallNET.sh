@@ -9,7 +9,7 @@ export tmpMirror=''
 export ipAddr=''
 export ipMask=''
 export ipGate=''
-export ipDNS='8.8.8.8'
+export ipDNS='1.1.1.1'
 export IncDisk='default'
 export interface=''
 export interfaceSelect=''
@@ -352,7 +352,7 @@ if [[ -n "$tmpDIST" ]]; then
         [[ "$isDigital" == '9' ]] && DIST='stretch';
         [[ "$isDigital" == '10' ]] && DIST='buster';
         [[ "$isDigital" == '11' ]] && DIST='bullseye';
-        # [[ "$isDigital" == '12' ]] && DIST='bookworm';
+        [[ "$isDigital" == '12' ]] && DIST='bookworm';
       }
     }
     LinuxMirror=$(selectMirror "$Relese" "$DIST" "$VER" "$tmpMirror")
@@ -364,7 +364,7 @@ if [[ -n "$tmpDIST" ]]; then
     [[ $? -eq '0' ]] && {
       isDigital="$(echo "$DIST" |grep -o '[\.0-9]\{1,\}' |sed -n '1h;1!H;$g;s/\n//g;$p')";
       [[ -n $isDigital ]] && {
-        [[ "$isDigital" == '12.04' ]] && DIST='precise';
+        # [[ "$isDigital" == '12.04' ]] && DIST='precise';
         [[ "$isDigital" == '14.04' ]] && DIST='trusty';
         [[ "$isDigital" == '16.04' ]] && DIST='xenial';
         [[ "$isDigital" == '18.04' ]] && DIST='bionic';
