@@ -39,3 +39,8 @@ for ((int = 0; int < ${#REGEX[@]}; int++)); do
 done
 
 [[ -z $SYSTEM ]] && red "不支持当前VPS系统，请使用主流的操作系统" && exit 1
+
+VIRT=$(systemd-detect-virt)
+if [[ ! $VIRT == "kvm" ]]; then
+
+fi
