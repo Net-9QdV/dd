@@ -42,5 +42,13 @@ done
 
 VIRT=$(systemd-detect-virt)
 if [[ ! $VIRT == "kvm" ]]; then
-
+    red "DD系统暂时不支持你所选的架构！"
+    exit 1
 fi
+
+
+menu(){
+
+}
+
+menu
