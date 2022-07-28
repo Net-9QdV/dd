@@ -54,11 +54,10 @@ info_bar(){
     echo -e "# ${GREEN}GitHub${PLAIN}: https://github.com/taffychan                      #"
     echo "#############################################################"
     echo ""
-    echo -e "操作系统: ${GREEN} ${CMD} ${PLAIN}"
-    echo ""
 }
 
 menu(){
+    yellow "请选择需要DD的系统"
     echo -e " ${GREEN}1.${PLAIN} CentOS"
     echo -e " ${GREEN}2.${PLAIN} Debian"
     echo -e " ${GREEN}3.${PLAIN} Ubuntu"
