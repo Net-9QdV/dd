@@ -46,9 +46,22 @@ if [[ ! $VIRT == "kvm" ]]; then
     exit 1
 fi
 
+info_bar(){
+    clear
+    echo "#############################################################"
+    echo -e "#                        ${RED}DD 系统脚本${PLAIN}                        #"
+    echo -e "# ${GREEN}作者${PLAIN}: taffychan                                           #"
+    echo -e "# ${GREEN}GitHub${PLAIN}: https://github.com/taffychan                      #"
+    echo "#############################################################"
+    echo ""
+    echo -e "操作系统: ${GREEN} ${CMD} ${PLAIN}"
+    echo ""
+}
 
 menu(){
-
+    echo -e " ${GREEN}1.${PLAIN} CentOS"
+    echo -e " ${GREEN}2.${PLAIN} Debian"
+    echo -e " ${GREEN}3.${PLAIN} Ubuntu"
 }
 
 menu
