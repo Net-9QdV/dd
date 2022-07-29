@@ -5,7 +5,7 @@
 ## 使用方法
 
 ```shell
-bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontents.com/taffychan/dd/main/InstallNET.sh') \
+bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontents.com/taffychan/dd/main/core.sh') \
 -d 11 \
 -v 64 \
 -a -firmware \
