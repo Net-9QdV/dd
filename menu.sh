@@ -56,11 +56,80 @@ info_bar(){
     echo ""
 }
 
+sysinfo(){
+    read -rp "请输入系统的root密码 [默认自动生成]：" rootPassword
+    read -rp "请输入系统的SSH端口 [默认22]：" sshPort 
+}
+
+startdd(){
+    bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/taffychan/dd/main/core.sh') \
+-${sysType} ${sysVer} \
+-v 64 \
+-a -firmware \
+-p "${rootPassword}" \
+-port ${sshPort}
+}
+
+oscentos(){
+    sysType="c"
+    sysVer="6.10"
+    sysinfo
+    startdd
+}
+
+osdebian(){
+    info_bar
+    yellow "请选择需要DD的系统版本"
+    echo -e " ${GREEN}1.${PLAIN} Debian 7"
+    echo -e " ${GREEN}2.${PLAIN} Debian 8"
+    echo -e " ${GREEN}3.${PLAIN} Debian 9"
+    echo -e " ${GREEN}4.${PLAIN} Debian 10"
+    echo -e " ${GREEN}5.${PLAIN} Debian 11"
+    echo ""
+    read -p "请输入选项 [1-5]：" debianChoice
+    case $debianChoice info_bar
+        1) sysType="d" && sysVer="7" && sysinfo && startdd ;;
+        2) sysType="d" && sysVer="8" && sysinfo && startdd ;;
+        3) sysType="d" && sysVer="9" && sysinfo && startdd ;;
+        4) sysType="d" && sysVer="10" && sysinfo && startdd ;;
+        5) sysType="d" && sysVer="11" && sysinfo && startdd ;;
+        *) red "请输入正确的选项 [1-5]！" && exit 1 ;;
+    esac
+}
+
+osubuntu(){
+    info_bar
+    info_bar
+    yellow "请选择需要DD的系统版本"
+    echo -e " ${GREEN}1.${PLAIN} Ubuntu 14.04"
+    echo -e " ${GREEN}2.${PLAIN} Ubuntu 16.04"
+    echo -e " ${GREEN}3.${PLAIN} Ubuntu 18.04"
+    echo -e " ${GREEN}4.${PLAIN} Ubuntu 20.04"
+    echo ""
+    read -p "请输入选项 [1-4]：" ubuntuChoice
+    case $ubuntuChoice info_bar
+        1) sysType="u" && sysVer="14.04" && sysinfo && startdd ;;
+        2) sysType="u" && sysVer="16.04" && sysinfo && startdd ;;
+        3) sysType="u" && sysVer="18.04" && sysinfo && startdd ;;
+        4) sysType="u" && sysVer="20.04" && sysinfo && startdd ;;
+        *) red "请输入正确的选项 [1-4]！" && exit 1 ;;
+    esac
+}
+
 menu(){
+    info_bar
     yellow "请选择需要DD的系统"
     echo -e " ${GREEN}1.${PLAIN} CentOS"
     echo -e " ${GREEN}2.${PLAIN} Debian"
     echo -e " ${GREEN}3.${PLAIN} Ubuntu"
+    echo ""
+    read -rp "请输入选项 [1-3]：" menuChoice
+    case $menuChoice in:
+        1) oscentos ;;
+        2) osdebian ;;
+        3) osubuntu ;;
+        *) red "请输入正确的选项 [1-3] ！" && exit 1 ;;
+    esac
 }
 
 menu
