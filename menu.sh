@@ -99,7 +99,6 @@ osdebian(){
 
 osubuntu(){
     info_bar
-    info_bar
     yellow "请选择需要DD的系统版本"
     echo -e " ${GREEN}1.${PLAIN} Ubuntu 14.04"
     echo -e " ${GREEN}2.${PLAIN} Ubuntu 16.04"
