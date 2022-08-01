@@ -62,12 +62,17 @@ sysinfo(){
 }
 
 startdd(){
-    bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/taffychan/dd/main/core.sh') \
+    read -rp "请再次确认是否需要DD系统？ [Y/N]: " yn
+    if [[ $yn =~ "Y"|"y" ]]; then
+        bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/taffychan/dd/main/core.sh') \
 -${sysType} ${sysVer} \
 -v 64 \
 -a -firmware \
 -p "${rootPassword}" \
 -port ${sshPort}
+    else
+        exit 1
+    fi
 }
 
 oscentos(){
